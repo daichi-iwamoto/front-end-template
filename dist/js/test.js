@@ -1,6 +1,6 @@
 "use strict";
 var person = {
-    name: "test??",
-    age: 23
+    name: "test",
+    age: 26
 };
 console.log("test");

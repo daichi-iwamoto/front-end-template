@@ -4,13 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "scss": "node-sass src/scss/ --output dist/css/ --output-style compressed --watch --source-map true",
-    "compile": "postcss dist/css/ -u autoprefixer -o dist/scc/ -c=postcss.config.js",
+    "compile": "node-sass src/scss/ --output dist/css/ --output-style compressed --source-map true",
+    "prefix": "postcss dist/css/ -u autoprefixer --replace",
+    "scss": "onchange src/scss/*.scss -- run-s compile prefix",
     "pug": "pug src/pug/ --hierarchy -o dist/ -w -P",
     "ts": "tsc --rootDir src/ts --outDir dist/js -w",
     "start": "browser-sync start -s dist/ -w dist/*.html dist/*.css dist/*.js",
     "watch": "run-p scss pug ts start"
   },
+  "browserslist": [
+    "since 2000"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/daichi-iwamoto/front-end-template.git"
@@ -31,6 +35,7 @@
     "typescript": "^3.9.7"
   },
   "devDependencies": {
+    "onchange": "^7.0.2",
     "postcss-cli": "^7.1.1"
   }
 }
