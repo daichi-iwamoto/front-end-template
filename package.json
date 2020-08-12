@@ -9,6 +9,7 @@
     "scss": "onchange src/scss/*.scss -- run-s compile prefix",
     "pug": "pug src/pug/ --hierarchy -o dist/ -w -P",
     "ts": "tsc --rootDir src/ts --outDir dist/js -w",
+    "js": "onchange src/js/**/*.js -- node uglify-js.js {{changed}}",
     "start": "browser-sync start -s dist/ -w dist/*.html dist/*.css dist/*.js",
     "watch": "run-p scss pug ts start"
   },
@@ -35,7 +36,9 @@
     "typescript": "^3.9.7"
   },
   "devDependencies": {
+    "fs": "0.0.1-security",
     "onchange": "^7.0.2",
     "postcss-cli": "^7.1.1"
+    "uglify-js": "^3.10.1"
   }
 }
