@@ -25,7 +25,7 @@ npm run watch
 
 ---
 
-> 以下は自身のnode.js環境に手動で導入する場合の
+> 以下は自身のnode.js環境に手動で導入する場合の手順
 
 ## pugコンパイル環境構築
 [pug-cli](https://www.npmjs.com/package/pug-cli)のインストール
