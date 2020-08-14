@@ -4,14 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "node-sass src/scss/ --output dist/css/ --output-style compressed --source-map true",
-    "prefix": "postcss dist/css/ -u autoprefixer --replace",
-    "scss": "onchange src/scss/*.scss -- run-s compile prefix",
-    "pug": "pug src/pug/ --hierarchy -o dist/ -w -P",
-    "ts": "tsc --rootDir src/ts --outDir dist/js -w",
-    "js": "onchange src/js/**/*.js -- node uglify-js.js {{changed}}",
-    "start": "browser-sync start -s dist/ -w dist/*.html dist/*.css dist/*.js",
-    "watch": "run-p scss pug ts start"
+    "js": "onchange src/js/**/*.js -- node uglify-js.js {{changed}}"
   },
   "browserslist": [
     "since 2000"
@@ -26,19 +19,9 @@
     "url": "https://github.com/daichi-iwamoto/front-end-template/issues"
   },
   "homepage": "https://github.com/daichi-iwamoto/front-end-template#readme",
-  "dependencies": {
-    "autoprefixer": "^9.8.6",
-    "browser-sync": "^2.26.12",
-    "node-sass": "^4.14.1",
-    "npm-run-all": "^4.1.5",
-    "pug": "^3.0.0",
-    "pug-cli": "^1.0.0-alpha6",
-    "typescript": "^3.9.7"
-  },
   "devDependencies": {
     "fs": "0.0.1-security",
     "onchange": "^7.0.2",
-    "postcss-cli": "^7.1.1",
     "uglify-js": "^3.10.1"
   }
 }

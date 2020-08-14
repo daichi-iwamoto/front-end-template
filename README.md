@@ -1,5 +1,5 @@
-# front-end-template
-> npm-scriptを使用して作成したpug, scss, typescriptのコンパイル環境
+# front-end-template (pure-js)
+> npm-scriptを使用して素のjsを圧縮するテンプレート
 
 ## 使用方法
 
@@ -7,150 +7,78 @@
 # モジュールインストール
 npm install
 
-# コンパイル実行 & localhost立ち上げ
-npm run watch
+# jsの圧縮処理
+npm run js
 ```
+
+---
+> 以下は自身のnode.js環境に手動で導入する場合の手順
 
 ## plugins
 > 使用するモジュール群
 
-* pug-cli
-* node-sass
-* postcss-cli
-* autoprefixer
-* typescript
-* browser-sync
-* npm-run-all
+* uglify-js
 * onchange
 
-## pugコンパイル環境構築
-`pug-cli`のインストール ( [公式](https://www.npmjs.com/package/pug-cli) )
+## js圧縮環境構築手順
+[uglify-js](https://www.npmjs.com/package/uglify-js)と[onchange](https://www.npmjs.com/package/onchange)インストール
 ```
-npm install pug-cli -D
-```
-
-`package.json`の`script`箇所に下記を追加
-```
-"pug": "pug src/pug/ -o dist/ --hierarchy -w -P"
-```
-
-| option | description |
-| --- | --- |
-| -o, --out | 出力先のディレクトリを指定 |
-| -w, --watch | コンパイル前のディレクトリを監視 |
-| -P, --pretty | ピュアなHTMLを出力する |
-| --hierarchy | ディレクトリ構造を維持して出力 |
-
-```
-# pugのコンパイル単体で実行
-npm run pug
-```
-
-## scssコンパイル環境構築
-[node-sass](https://www.npmjs.com/package/node-sass), [postcss-cli](https://www.npmjs.com/package/postcss-cli), [autoprefixer](https://www.npmjs.com/package/autoprefixer), [onchange](https://www.npmjs.com/package/onchange), [npm-run-all](https://www.npmjs.com/package/npm-run-all) をインストール
-```
-npm install node-sass -D
-npm install postcss-cli -D
-npm install autoprefixer -D
 npm install onchange -D
-npm install npm-run-all -D
+npm install uglify-js -D
 ```
 
-### scssをcssにコンパイルを単体実行
-> `node-sass`を使用
-
+### package.json
 `package.json`の`script`箇所に下記を追加
 ```
-"compile": "node-sass src/scss/ --output dist/css/ --output-style compressed --source-map true"
+"js": "onchange src/js/**/*.js -- node uglify-js.js {{changed}}"
 ```
 
-`node-sass`のオプション
-| option | description |
-| --- | --- |
-| -o, --output | 出力先のディレクトリを指定 |
-| --output-style | 出力後の形式指定(compressed:1行に圧縮) |
-| --source-map | source-mapを出力有無 |
+`onchange src/js/**/*.js`で`src/js/`ディレクトリ以下のjsファイルを監視して
+変更があれば`uglify-js.js`が実行される
+引数として`{{changed}}`（onchangeが検知した変更のかかったファイルのパス）を渡している
 
-```
-# scssをcssにコンパイルを単体実行
-npm run compile
-```
+### uglify-js.js
+`package.json`で指定した`uglify-js.js`を下記の様に作成
+解説はコメントアウトで記載
 
-### ベンダープレフィックスを付与する処理単体を実行
-> `postcss-cli`とそのプラグイン`autoprefixer`を使用
+```javascript
+// 使用するモジュールを読み込む
+var UglifyJS = require("uglify-js");
+var fs = require('fs');
+var path = require('path');
 
-`package.json`の`script`箇所に下記を追加
-```
-"prefix": "postcss dist/css/ -u autoprefixer --replace"
-```
+// 変更されたJSのパスを引数(process.argv[2])から取得し、バックスラッシュをスラッシュに変換
+var inputPath = process.argv[2].replace(/\\/g, '/');
 
-`postcss-cli`のオプション
-| option | description |
-| --- | --- |
-| -u, --use | 使用するプラグイン(今回は`autoprefixer`) |
-| --replace | 出力ファイルを今あるファイルと置き換える |
+// 変更されたJSのパスを元に、アウトプット先のディレクトリを指定する為の変数を作成
+var outputPath = inputPath.replace('src\/', 'dist\/');
 
+// 圧縮処理
+// 変更されたJSを読み込み変数に格納
+var code = fs.readFileSync(inputPath, "utf8");
+// uglify-jsモジュールを使用して圧縮・変数に格納（圧縮形式等を指定する場合はここで行う）
+var result = UglifyJS.minify(code);
 
-`package.json`に下記を追加
-```
-  ・
-  ・
-  ・
-"browserslist": [
-  "since 2000"
-],
-  ・
-  ・
-  ・
-```
-
-`browserslist`には対応するブラウザを指定
-今回は2000年以降のバージョンのすべてのブラウザに対応
-
-```
-# ベンダープレフィックスを付与する処理単体を実行
-npm run prefix
-```
-
-### scssのコンパイル・ベンダープレフィックス対応を実行
-> `onchange`と`npm-run-all`を使用
-
-`package.json`の`script`箇所に下記を追加
-```
-"scss": "onchange src/scss/*.scss -- run-s compile prefix"
-```
-
-```
-# onchangeの使用方法
-onchange (監視対象ファイル) -- (実行内容)
-
-# npm-run-allの使用方法
-run-s (1番目に行う処理) (2番目に行う処理) …
-```
-
-```
-# scssのコンパイル・ベンダープレフィックス対応を実行
-npm run scss
-```
-
-## TypeScriptコンパイル環境構築
-[typescript](https://www.npmjs.com/package/typescript)のインストール
-```
-npm install typescript -D
-```
-
-```
-# tsconfig.jsonを生成
-tsc --init
-```
-
-`tsconfig.json`の下記を編集
-| option | description |
-| --- | --- |
-| target | 出力時のJSの形式を指定(今回はes5) |
-| lib | コンパイル時に使用するモジュール(今回は`ES2015`と`ES2020`の使用を想定) |
-
-`package.json`の`script`箇所に下記を追加
-```
-"ts": "tsc --rootDir src/ts --outDir dist/js -w"
+// 出力先のディレクトリの存在確認
+fs.access(path.dirname(outputPath), fs.constants.W_OK, (err) => {
+  // ディレクトリが存在しなかった場合
+  if (err) {
+    // ディレクトリを作成
+    fs.mkdir(path.dirname(outputPath), (err) => {
+      if (err) throw err;
+      // ディレクトリが作成されたらファイルを作成し圧縮後のコードを書き込む
+      fs.writeFile(outputPath, result.code, (err) => {
+        if (err) throw err;
+        // ディレクトリ作成とJS圧縮の成功ログ出力
+        console.log('Success mkdir & press (" ' + outputPath + ' ") !');
+      });
+    });
+  }
+  // ディレクトリが存在していた場合、圧縮後のコードを書き込む
+  fs.writeFile(outputPath, result.code, (err) => {
+    if (err) throw err;
+  　//　JS圧縮成功のログ出力 
+    console.log('Success press (" ' + outputPath + ' ") !');
+  });
+});
 ```
