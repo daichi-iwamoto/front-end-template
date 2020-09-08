@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "node-sass src/scss/ --output dist/css/ --output-style compressed --source-map true"
+    "compile": "node-sass src/scss/ --output dist/css/ --output-style compressed --source-map false",
+    "prefix": "postcss dist/css/ -u autoprefixer --replace",
+    "scss": "onchange src/scss/*.scss -- run-s compile prefix"
   },
   "browserslist": [
     "since 2000"

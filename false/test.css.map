@@ -1,0 +1,9 @@
+{
+	"version": 3,
+	"file": "../dist/css/test.css",
+	"sources": [
+		"../src/scss/test.scss"
+	],
+	"names": [],
+	"mappings": "AAAA,AACE,IADE,CACF,IAAI,AAAC,CACH,OAAO,CAAE,IAAI,CACb,eAAe,CAAE,MAAM,CACvB,WAAW,CAAE,MAAM,CACnB,SAAS,CAAE,IAAI,CAChB"
+}
