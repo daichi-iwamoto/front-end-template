@@ -8,7 +8,7 @@
 npm install
 
 # コンパイル実行
-npm run compile
+npm run scss
 ```
 
 ## scssコンパイル環境構築
