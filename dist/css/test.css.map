@@ -5,5 +5,5 @@
 		"../../src/scss/test.scss"
 	],
 	"names": [],
-	"mappings": "AAAA,AACE,IADE,CACF,IAAI,AAAC,CACH,gBAAgB,CAAE,OAAO,CACzB,OAAO,CAAE,IAAI,CACb,OAAO,CAAE,IAAI,CACd"
+	"mappings": "AAAA,AACE,IADE,CACF,IAAI,AAAC,CACH,gBAAgB,CAAE,IAAI,CACvB"
 }
