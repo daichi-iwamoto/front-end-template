@@ -6,8 +6,15 @@ const imageminSvgo = require('imagemin-svgo');
 
 imagemin([process.argv[2]], {
   plugins: [
-    imageminMozjpeg({ quality: 80 }),
-    imageminPngquant(),
+    imageminMozjpeg({
+      quality: 85,
+      progressive: true 
+    }),
+    imageminPngquant({
+      quality: [.65, .8],
+      speed: 1,
+      floyd: 0
+    }),
     imageminGifsicle(),
     imageminSvgo()
   ],
